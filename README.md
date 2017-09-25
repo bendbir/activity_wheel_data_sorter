@@ -9,4 +9,4 @@ The excel files you wish to combine are placed together in an "input" file direc
 The excel Files being combined must use the same activity wheels otherwise an error will occur.
 Data will be combined into a single .csv file that will be generated in the "output" file directory.
 
-An explaination of how to use the script can also be found in the instruction.txt file.
+An explanation of how to use the script can also be found in the instruction.txt file.
