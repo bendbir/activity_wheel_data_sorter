@@ -9,8 +9,6 @@ from tkinter import *
 # Define GUI function to combine files
 def combine_files():
     print ("COMBINED")
-#    e1
-#    print("First Name: %s\nLast Name: %s" % (e1.get(), e2.get()))
 
     # Extract Wheel Num Info from Input Window
     raw_wheel_input = wheel_nums_entry.get()
@@ -61,37 +59,61 @@ def combine_files():
             worksheet = workbook.sheet_by_name(sheet_name)
             print (worksheet)
 
+
+
+            # Test worksheet.nrows
+            print ("worksheet.nrows:", worksheet.nrows)
+
             # Parse through rows, look for mean row.
             # NOTE, if mouse did not run there won't be a mean row.
-            # if this happens, run script on that file seperately not including the wheel that did not run.
+            # Setup boolean for no_mean_row, assume there isn't one unless found.
+            no_mean_row = True
             for row_idx in range(0, worksheet.nrows):
                 test_row = worksheet.row(row_idx)
                 if str(test_row[0]) == "text:'Mean:'":
                     print ("found mean row!")
+                    no_mean_row = False
                     mean_row = row_idx
                     print ("Mean Row:", mean_row)
 
-            # column 3 is mean Av. Speed (rev/min)
-            # column 4 is mean Max Speed (rev/min)
-            # column 6 is mean Av. Acceleration (cm/s-2)
-            # column 7 is mean Max Acceleration (cm/s-2)
-            # column 8 is mean Distance Traveled (cm)
-            num_of_bouts = worksheet.row(mean_row - 2)[1].value
-            av_speed = worksheet.row(mean_row)[3].value
-            max_speed = worksheet.row(mean_row)[4].value
-            av_accel = worksheet.row(mean_row)[6].value
-            max_accel = worksheet.row(mean_row)[7].value
-            dist_traveled = worksheet.row(mean_row)[8].value
-            num_of_bouts = worksheet.row(mean_row - 2)[1].value
+            if no_mean_row == False:
+                # column 3 is mean Av. Speed (rev/min)
+                # column 4 is mean Max Speed (rev/min)
+                # column 6 is mean Av. Acceleration (cm/s-2)
+                # column 7 is mean Max Acceleration (cm/s-2)
+                # column 8 is mean Distance Traveled (cm)
+                num_of_bouts = worksheet.row(mean_row - 2)[1].value
+                av_speed = worksheet.row(mean_row)[3].value
+                max_speed = worksheet.row(mean_row)[4].value
+                av_accel = worksheet.row(mean_row)[6].value
+                max_accel = worksheet.row(mean_row)[7].value
+                dist_traveled = worksheet.row(mean_row)[8].value
+                num_of_bouts = worksheet.row(mean_row - 2)[1].value
 
-            # Range of data is (25, (mean row - 4))
-            # Use this to Determine total time Running
-            # and total distance traveled.
-            total_time_running = 0
-            total_distance = 0
-            for x in range(25, (mean_row - 4)):
-                total_time_running += worksheet.row(x)[1].value
-                total_distance += worksheet.row(x)[8].value
+                # Range of data is (25, (mean row - 4))
+                # Use this to Determine total time Running
+                # and total distance traveled.
+                total_time_running = 0
+                total_distance = 0
+                for x in range(25, (mean_row - 4)):
+                    total_time_running += worksheet.row(x)[1].value
+                    total_distance += worksheet.row(x)[8].value
+
+            # If there is NO mean row, no_mean_row still equals True
+            if no_mean_row == True:
+
+                # Set all to "NA", since there is no or negligable running activity
+                num_of_bouts = "NA"
+                av_speed = "NA"
+                max_speed = "NA"
+                av_accel = "NA"
+                max_accel = "NA"
+                dist_traveled = "NA"
+                num_of_bouts = "NA"
+
+                total_time_running = "NA"
+                total_distance = "NA"
+
 
             # Print to test Data
             print ("Mean Data From Excel File...")
