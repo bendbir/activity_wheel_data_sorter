@@ -76,6 +76,12 @@ def combine_files():
                     mean_row = row_idx
                     print ("Mean Row:", mean_row)
 
+                # Also find first row of data recorded.
+                # This will help sum for total_distance and total_time_running
+                if str(test_row[0]) == "text:'Period Start'":
+                    period_start = row_idx
+                    print ("Period Start Row:", period_start)
+
             if no_mean_row == False:
                 # column 3 is mean Av. Speed (rev/min)
                 # column 4 is mean Max Speed (rev/min)
@@ -90,12 +96,16 @@ def combine_files():
                 dist_traveled = worksheet.row(mean_row)[8].value
                 num_of_bouts = worksheet.row(mean_row - 2)[1].value
 
-                # Range of data is (25, (mean row - 4))
+                # Range of data is ((period_start + 1), (mean row - 4))
                 # Use this to Determine total time Running
                 # and total distance traveled.
                 total_time_running = 0
                 total_distance = 0
-                for x in range(25, (mean_row - 4)):
+                for x in range((period_start + 1), (mean_row - 4)):
+                    # NOTE ON BOTTOM OF RANGE USED
+                    # 37 for 2.5 hr session, 5min intervals
+                    # 25 for 1.5 hr session, 5min intervals
+                    # 31 for 2hr - 5mins (shortened session)
                     total_time_running += worksheet.row(x)[1].value
                     total_distance += worksheet.row(x)[8].value
 
