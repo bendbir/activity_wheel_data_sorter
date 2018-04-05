@@ -1,6 +1,4 @@
 # activity_wheel_data_sorter
-Benjamin Doyle 4/4/2018
-
 Bioseb mouse activity wheels output each recording session as a single excel file with wheels on separate sheets.
 Copying and pasting data from sheets was taking too much time, hindering efficient data analysis.
 I wrote this Python script with a basic GUI for sorting excel files output from activity wheels
